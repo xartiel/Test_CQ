@@ -49,8 +49,8 @@ void expand(vector<Army> & newPureArmies, vector<Army> & newHeroArmies,
     int remainingFollowers;
     size_t availableMonstersSize = availableMonsters.size();
     size_t availableHeroesSize = availableHeroes.size();
-    vector<bool> usedHeroes; usedHeroes.reserve(availableHeroesSize);
-    size_t i, j, m;
+		vector<bool> usedHeroes; usedHeroes.resize(availableHeroesSize);
+		size_t i, j, m;
     SkillType currentSkill;
     bool friendsActive;
     
@@ -75,15 +75,13 @@ void expand(vector<Army> & newPureArmies, vector<Army> & newHeroArmies,
         if (!oldHeroArmies[i].lastFightData.dominated) {
             friendsActive = false;
             remainingFollowers = followerUpperBound - oldHeroArmies[i].followerCost;
-            for (j = 0; j < currentArmySize; j++) {
-                for (m = 0; m < availableHeroesSize; m++) {
-                    if (oldHeroArmies[i].monsters[j] == availableHeroes[m]) {
-                        friendsActive |= oldHeroArmies[i].monsters[j]->skill.type == friends;
-                        usedHeroes[m] = true;
-                        break;
-                    }
-                }
-            }
+						for (j = 0; j < currentArmySize; j++)
+							for (m = 0; m < availableHeroesSize; m++)
+								if (oldHeroArmies[i].monsters[j] == availableHeroes[m]) {
+									friendsActive |= oldHeroArmies[i].monsters[j]->skill.type == friends;
+									usedHeroes[m] = true;
+									break;
+								}
             for (m = 0; m < availableMonstersSize && availableMonsters[m]->cost < remainingFollowers && availableMonsters[m]->cost > minimumMonsterCost; m++) {
                 newHeroArmies.push_back(oldHeroArmies[i]);
                 newHeroArmies.back().add(availableMonsters[m]);
