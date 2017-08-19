@@ -357,137 +357,159 @@ int solveInstance(bool debugInfo) {
     return (int)(time(NULL)) - startTime;
 }
 
-int main(int argc, char** argv) {
-    
-    // Declare Variables
-    vector<Monster *> friendLineup {};
-    vector<Monster *> hostileLineup {};
-    vector<string> stringLineup {};
-    string inputString;
-    vector<int> yourHeroLevels;
-    
-    // Additional convienience Strings
-		vector<string> daily{ "w10", "e10", "a10", "w10", "shaman:99" };
-		vector<string> daily2{ "w10", "e10", "a10", "w10", "shaman:99" };
-		vector<string> test3 {"a9", "f8", "a8"};
-    // Declare Hero Levels
-    maxMonstersAllowed = 6;         // Set this to how many Monsters should be in the solution (f.e 4 for X-3 Quests) 
-    minimumMonsterCost = 100000;         // Minimum amount a monster used in the soluiton should cost. Useful for reducing the amount of monsters when you are sure you wont need them (f.e. a1 in dq20)
-    stringLineup = daily;           // Choose against which lineup you want to fight use one from above or make your own and then change the name accordingly
-    yourHeroLevels = {    // INPUT YOUR HERO LEVELS HERE (For manual editing: Names tell you which number is the level of which hero)
-         0, 0, 0, 0,      // "lady of twilight","tiny","nebra","james"
-         0, 0, 0,         // "hunter","shaman","alpha"
-         0, 0, 0,         // "carl","nimue","athos"
-         0, 0, 0,         // "jet","geron","rei"
-         0, 0, 0,         // "ailen","faefyr","auri"
-         0, 0, 0,         // "k41ry", "t4urus", "tr0n1x"
-         0, 0, 0,         // "aquortis", "aeris", "geum"
-         0, 0, 0,         // "rudean","aural","geror"
-         0, 0, 0, 0,      // "valor","rokka","pyromancer","bewat"
-         0, 0, 0, 0       // "nicte", "forest druid","ignitor","undine"
-    }; 
-    
-    // Flow Control Variables
-    bool ignoreConsole = false;                         // Disables the console question whether you want to read from file or command line
-    bool individual = false;                            // Set this to true if you want to simulate individual fights (lineups will be promted when you run the program)
-    bool debugInfo = true;                              // Set this to true if you want to see how far the execution is and how lone the execution took altogether
-    bool manualInput = false;                           // Set this to true if you want nothing to do with this file and just want to input stuff over the command line like you're used to
-    
-    int totalTime;
-    
-    // --------------------------------------------- Actual Program Starts here --------------------------------------------
-    
-    cout << "Welcome to Diceycle's PvE Instance Solver!" << endl;
-    
-    if (!ignoreConsole) {
-        manualInput = askYesNoQuestion("Do you want to input everything via command line?");
-    }
-    
-    bool userWantsContinue = true;
-    while (userWantsContinue) {
-        // Initialize global Data
-        followerUpperBound = numeric_limits<int>::max();
-        best = Army();
-        initMonsterData();
-        
-        // Collect the Data via Command Line if the user wants
-        if (manualInput) {
-            try {
-                yourHeroLevels = takeHerolevelInput();
-            } catch (const exception & e) {
-                haltExecution();
-                return EXIT_FAILURE;
-            }
-            targetArmy = takeLineupInput("Enter Enemy Lineup");
-            targetArmySize = targetArmy.monsterAmount;
-            cout << "Enter how many monsters are allowed in the solution" << endl;
-            getline(cin, inputString);
-            maxMonstersAllowed = stoi(inputString);
-            cout << "Set a lower follower limit on monsters used:" << endl;
-            cout << "  (f.e. 215000 will exclude e8 and cheaper in the solution)" << endl;
-            cout << "  0 for ALL monsters; -1 for NO monsters" << endl;
-            getline(cin, inputString);
-            minimumMonsterCost = stoi(inputString);
-        } else {
-            cout << "Taking data from script" << endl;
-            targetArmy = Army(makeMonstersFromStrings(stringLineup));
-            targetArmySize = targetArmy.monsterAmount;
-        }
-        
-        filterMonsterData(minimumMonsterCost);
-        initializeUserHeroes(yourHeroLevels);
-        
-        if (individual) { // custom input mode
-            cout << "Simulating individual Figths" << endl;
-            while (true) {
-                friendLineup = takeLineupInput("Enter friendly lineup:");
-                hostileLineup = takeLineupInput("Enter hostile lineup");
-                
-                Army left = Army(friendLineup);
-                Army right = Army(hostileLineup);
-                simulateFight(left, right, true);
-                cout << left.lastFightData.rightWon << " " << left.followerCost << " " << right.followerCost << endl;
-                
-                if (!askYesNoQuestion("Simulate another Fight?")) {
-                    break;
-                }
-            }
-            return 0;
-        }
-        
-        totalTime = solveInstance(debugInfo);
-        // Last check to see if winning combination wins:
-        if (followerUpperBound < numeric_limits<int>::max()) {
-            best.lastFightData.valid = false;
-            simulateFight(best, targetArmy);
-            if (best.lastFightData.rightWon) {
-                best.print();
-                cout << "This does not beat the lineup!!!" << endl;
-                for (int i = 1; i <= 10; i++) {
-                    cout << "ERROR";
-                }
-                haltExecution();
-                return EXIT_FAILURE;
-                
-            } else {
-                // Print the winning combination!
-                cout << endl << "The optimal combination is:" << endl << "  ";
-                best.print();
-                cout << "  (Right-most fights first)" << endl;
-            }
-        } else {
-            cout << endl << "Could not find a solution that beats this lineup." << endl;
-        }
-        
-        cout << endl;
-        cout << totalFightsSimulated << " Fights simulated." << endl;
-        cout << "Total Calculation Time: " << totalTime << endl;
-        if (manualInput) {
-            userWantsContinue = askYesNoQuestion("Do you want to calculate another lineup?");
-        } else {
-            userWantsContinue = false;
-            haltExecution();
-        }
-    }
-    return EXIT_SUCCESS;
+int							main()
+{
+
+	// Declare Variables
+  std::vector<Monster *>	friendLineup{};
+  std::vector<Monster *>	hostileLineup{};
+  std::vector<string>		stringLineup{};
+  std::string				inputString;
+  std::vector<int>			yourHeroLevels;
+
+  // Additional convienience Strings
+  std::vector<string>		daily{ "w10", "e10", "a10", "w10", "shaman:99" };
+  std::vector<string>		test3{ "a9", "f8", "a8" };
+
+// Declare Hero Levels
+  maxMonstersAllowed = 6;         // Set this to how many Monsters should be in the solution (f.e 4 for X-3 Quests) 
+  minimumMonsterCost = 70000;         // Minimum amount a monster used in the soluiton should cost. Useful for reducing the amount of monsters when you are sure you wont need them (f.e. a1 in dq20)
+  stringLineup = daily;           // Choose against which lineup you want to fight use one from above or make your own and then change the name accordingly
+  yourHeroLevels = {    // INPUT YOUR HERO LEVELS HERE (For manual editing: Names tell you which number is the level of which hero)
+	   0, 0, 0, 0,      // "lady of twilight","tiny","nebra","james"
+	   0, 0, 0,         // "hunter","shaman","alpha"
+	   0, 0, 0,         // "carl","nimue","athos"
+	   0, 0, 0,         // "jet","geron","rei"
+	   0, 0, 0,         // "ailen","faefyr","auri"
+	   0, 0, 0,         // "k41ry", "t4urus", "tr0n1x"
+	   0, 0, 0,         // "aquortis", "aeris", "geum"
+	   0, 0, 0,         // "rudean","aural","geror"
+	   0, 0, 0, 0,      // "valor","rokka","pyromancer","bewat"
+	   0, 0, 0, 0       // "nicte", "forest druid","ignitor","undine"
+  };
+
+  // Flow Control Variables
+  bool ignoreConsole = false;                         // Disables the console question whether you want to read from file or command line
+  bool individual = false;                            // Set this to true if you want to simulate individual fights (lineups will be promted when you run the program)
+  bool debugInfo = true;                              // Set this to true if you want to see how far the execution is and how lone the execution took altogether
+  bool manualInput = false;                           // Set this to true if you want nothing to do with this file and just want to input stuff over the command line like you're used to
+
+  int totalTime;
+
+  // --------------------------------------------- Actual Program Starts here --------------------------------------------
+
+  cout << "Welcome to Diceycle's PvE Instance Solver!" << endl;
+
+  if (!ignoreConsole)
+	manualInput = askYesNoQuestion("Do you want to input everything via command line?");
+
+  bool userWantsContinue = true;
+  while (userWantsContinue)
+  {
+	  // Initialize global Data
+	followerUpperBound = numeric_limits<int>::max();
+	best = Army();
+	initMonsterData();
+
+	// Collect the Data via Command Line if the user wants
+	if (manualInput)
+	{
+	  try
+	  {
+		yourHeroLevels = takeHerolevelInput();
+	  }
+	  catch (const exception & e)
+	  {
+		haltExecution();
+		return EXIT_FAILURE;
+	  }
+	  targetArmy = takeLineupInput("Enter Enemy Lineup");
+	  targetArmySize = targetArmy.monsterAmount;
+	  std::cout << "Enter how many monsters are allowed in the solution ";
+	  std::cout << "[Default: " << maxMonstersAllowed << "]" << std::endl;
+	  std::getline(std::cin, inputString);
+	  if (inputString.size() && is_Number(inputString))
+		if (std::stoi(inputString) > 0 && std::stoi(inputString) <=6)
+		  maxMonstersAllowed = std::stoi(inputString);
+
+	  std::cout << "Set a lower follower limit on monsters used:";
+	  std::cout << std::endl;
+	  std::cout << "  (f.e. 215000 will exclude e8 and cheaper in the solution)";
+	  std::cout << std::endl;
+	  std::cout << "  (0 for ALL monsters; -1 for NO monsters)" << std::endl;
+	  std::cout << "  [Default: " << minimumMonsterCost << "]" << std::endl;
+	  std::getline(std::cin, inputString);
+	  if (inputString.size() && is_Number(inputString))
+		minimumMonsterCost = std::stoi(inputString);
+	}
+	else
+	{
+	  std::cout << "Taking data from script" << std::endl;
+	  targetArmy = Army(makeMonstersFromStrings(stringLineup));
+	  targetArmySize = targetArmy.monsterAmount;
+	}
+
+	filterMonsterData(minimumMonsterCost);
+	initializeUserHeroes(yourHeroLevels);
+
+	if (individual) // custom input mode
+	{
+	  std::cout << "Simulating individual Figths" << std::endl;
+	  while (true)
+	  {
+		friendLineup = takeLineupInput("Enter friendly lineup:");
+		hostileLineup = takeLineupInput("Enter hostile lineup");
+
+		Army left = Army(friendLineup);
+		Army right = Army(hostileLineup);
+		simulateFight(left, right, true);
+		std::cout << left.lastFightData.rightWon << " " << left.followerCost;
+		std::cout << " " << right.followerCost << std::endl;
+
+		if (!askYesNoQuestion("Simulate another Fight?"))
+		  break;
+	  }
+	  return 0;
+	}
+
+	totalTime = solveInstance(debugInfo);
+	// Last check to see if winning combination wins:
+	if (followerUpperBound < numeric_limits<int>::max())
+	{
+	  best.lastFightData.valid = false;
+	  simulateFight(best, targetArmy);
+	  if (best.lastFightData.rightWon)
+	  {
+		best.print();
+		cout << "This does not beat the lineup!!!" << endl;
+		for (int i = 1; i <= 10; i++)
+		{
+		  cout << "ERROR";
+		}
+		haltExecution();
+		return EXIT_FAILURE;
+
+	  }
+	  else
+	  {
+		// Print the winning combination!
+		std::cout << std::endl << "The optimal combination is:" << std::endl << "  ";
+		best.print();
+		std::cout << "  (Right-most fights first)" << std::endl;
+	  }
+	}
+	else
+	{
+	  std::cout << std::endl;
+	  std::cout << "Could not find a solution that beats this lineup." << endl;
+	}
+
+	std::cout << std::endl;
+	std::cout << totalFightsSimulated << " Fights simulated." << std::endl;
+	std::cout << "Total Calculation Time: " << totalTime << std::endl;
+	if (manualInput)
+	  userWantsContinue = askYesNoQuestion("Do you want to calculate another lineup?");
+  }
+
+  return EXIT_SUCCESS;
 }
