@@ -82,28 +82,31 @@ void simulateFight(Army & left, Army & right, bool verbose) {
         paoeDamageLeft = 0;
         healingLeft = 0;
         pureMonstersLeft = 0;
-        for (size_t i = leftLost; i < leftArmySize; i++) {
-            if (leftCumAoeDamageTaken >= leftLineup[i]->hp) { // Check for Backline Deaths
-                leftLost += (leftLost == i);
-            } else {
-                skill = &leftLineup[i]->skill;
-                skillType = skill->type;
-                skillTarget = skill->target;
-                if (skillType == nothing) {
-                    pureMonstersLeft++; // count for friends ability
-                } else if (skillType == protect && (skillTarget == all || skillTarget == leftLineup[leftLost]->element)) {
-                    protectionLeft += skill->amount;
-                } else if (skillType == buff && (skillTarget == all || skillTarget == leftLineup[leftLost]->element)) {
-                    damageBuffLeft += skill->amount;
-                } else if (skillType == heal) {
-                    healingLeft += skill->amount;
-                } else if (skillType == aoe) {
-                    aoeDamageLeft += skill->amount;
-                } else if (skillType == pAoe && i == leftLost) {
-                    paoeDamageLeft += leftLineup[i]->damage;
-                }
-            }
-        }
+				for (size_t i = leftLost; i < leftArmySize; i++)
+				{
+					if (leftCumAoeDamageTaken >= leftLineup[i]->hp)
+					{ // Check for Backline Deaths
+						leftLost += (leftLost == i);
+					}
+					else
+					{
+						skill = &leftLineup[i]->skill;
+						skillType = skill->type;
+						skillTarget = skill->target;
+						if (skillType == nothing)
+							pureMonstersLeft++; // count for friends ability
+						else if (skillType == protect && (skillTarget == all || skillTarget == leftLineup[leftLost]->element))
+							protectionLeft = (int)(protectionLeft + skill->amount);
+						else if (skillType == buff && (skillTarget == all || skillTarget == leftLineup[leftLost]->element))
+							damageBuffLeft = (int)(damageBuffLeft + skill->amount);
+						else if (skillType == heal)
+							healingLeft = (int)(healingLeft + skill->amount);
+						else if (skillType == aoe)
+							aoeDamageLeft = (int)(aoeDamageLeft + skill->amount);
+						else if (skillType == pAoe && i == leftLost)
+							paoeDamageLeft += leftLineup[i]->damage;
+					}
+				}
         
         damageBuffRight = 0;
         protectionRight = 0;
@@ -121,13 +124,13 @@ void simulateFight(Army & left, Army & right, bool verbose) {
                 if (skillType == nothing) {
                     pureMonstersRight++;  // count for friends ability
                 } else if (skillType == protect && (skillTarget == all || skillTarget == rightLineup[rightLost]->element)) {
-                    protectionRight += skill->amount;
+                    protectionRight = (int)(protectionRight + skill->amount);
                 } else if (skillType == buff && (skillTarget == all || skillTarget == rightLineup[rightLost]->element)) {
-                    damageBuffRight += skill->amount;
+                    damageBuffRight = (int)(damageBuffRight + skill->amount);
                 } else if (skillType == heal) {
-                    healingRight += skill->amount;
+                    healingRight = (int)(healingRight + skill->amount);
                 } else if (skillType == aoe) {
-                    aoeDamageRight += skill->amount;
+                    aoeDamageRight = (int)(aoeDamageRight + skill->amount);
                 } else if (skillType == pAoe && i == rightLost) {
                     paoeDamageRight += rightLineup[i]->damage;
                 }
@@ -165,23 +168,23 @@ void simulateFight(Army & left, Army & right, bool verbose) {
         
         // Handle Monsters with skills berserk or friends
         if (currentMonsterLeft->skill.type == berserk) {
-            damageLeft *= pow(currentMonsterLeft->skill.amount, leftBerserkProcs);
+					damageLeft = (int)(damageLeft * pow(currentMonsterLeft->skill.amount, leftBerserkProcs));
             leftBerserkProcs++;
         } else {
             leftBerserkProcs = 0;
         }
         if (currentMonsterLeft->skill.type == friends) {
-            damageLeft *= pow(currentMonsterLeft->skill.amount, pureMonstersLeft);
+					damageLeft = (int)(damageLeft * pow(currentMonsterLeft->skill.amount, pureMonstersLeft));
         }
         
         if (currentMonsterRight->skill.type == berserk) {
-            damageRight *= pow(currentMonsterRight->skill.amount, rightBerserkProcs);
+					damageRight = (int)(damageRight * pow(currentMonsterRight->skill.amount, rightBerserkProcs));
             rightBerserkProcs++; 
         } else {
             rightBerserkProcs = 0;
         }
         if (currentMonsterRight->skill.type == friends) {
-            damageRight *= pow(currentMonsterRight->skill.amount, pureMonstersRight);
+					damageRight = (int)(damageRight * pow(currentMonsterRight->skill.amount, pureMonstersRight));
         }
         
         // Add Buff Damage
@@ -191,9 +194,9 @@ void simulateFight(Army & left, Army & right, bool verbose) {
         // Handle Elemental advantage
         elementalDifference = (currentMonsterLeft->element - currentMonsterRight->element);
         if (elementalDifference == -1 || elementalDifference == 3) {
-            damageLeft *= elementalBoost;
+					damageLeft = (int)(damageLeft * elementalBoost);
         } else if (elementalDifference == 1 || elementalDifference == -3) {
-            damageRight *= elementalBoost;
+					damageRight = (int)(damageRight * elementalBoost);
         }
         
         // Handle Protection
@@ -242,13 +245,13 @@ void simulateFight(Army & left, Army & right, bool verbose) {
     
     if (leftLost >= leftArmySize) { //draws count as right wins. 
         left.lastFightData.rightWon = true;
-        left.lastFightData.monstersLost = rightLost; 
+        left.lastFightData.monstersLost = (int8_t)(rightLost); 
         left.lastFightData.damage = rightFrontDamageTaken;
-        left.lastFightData.berserk = rightBerserkProcs;
+        left.lastFightData.berserk = (int8_t)(rightBerserkProcs);
     } else {
         left.lastFightData.rightWon = false;
-        left.lastFightData.monstersLost = leftLost; 
+        left.lastFightData.monstersLost = (int8_t)(leftLost);
         left.lastFightData.damage = leftFrontDamageTaken;
-        left.lastFightData.berserk = leftBerserkProcs;
+        left.lastFightData.berserk = (int8_t)(leftBerserkProcs);
     }
 }

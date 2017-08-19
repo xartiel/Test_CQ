@@ -56,8 +56,8 @@ Monster getLeveledHero(const Monster & m, int rarity, int level) {
     }
     int value = m.hp + m.damage;
     return Monster(
-        round(m.hp + points * ((double)m.hp) / value),
-        m.damage + round(points * ((double)m.damage) / value),
+        (int)(round(m.hp + points * ((double)m.hp) / value)),
+        (int)(m.damage + round(points * ((double)m.damage) / value)),
         m.cost,
         m.name + ":" + to_string(level),
         m.element,
