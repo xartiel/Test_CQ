@@ -82,6 +82,7 @@ static vector<Monster> monsterBaseList { // Raw Monster Data, holds the actual O
 		Monster(168, 168, 4741000, "f14", fire),
 		Monster(224, 134, 5199000, "f15", fire),
 };
+
 static vector<Monster> baseHeroes { // Raw, unleveld Hero Data, holds actual Objects
     Monster( 45, 20, 0, "lady of twilight",  air,   {protect, all, air, 1}),
     Monster( 70, 30, 0, "tiny",              earth, {aoe,     all, earth, 2}),
@@ -199,7 +200,7 @@ static vector<vector<string>> quests { // Contains all quest lineups for easy re
 	{"e9", "a9", "w8", "f8", "e8"},
 	{"f6", "a7", "f7", "a8", "f8", "a9"},
 	{"w8", "w7", "w8", "w8", "w7", "w8"},       //25
-    {"a9", "w7", "w8", "e7", "e8", "f10"},
+	{"a9", "w7", "w8", "e7", "e8", "f10"},
 	{"e9", "f9", "w9", "f7", "w7", "w7"},
 	{"a10", "a8", "a9", "a10", "a9"},
 	{"a10", "w7", "f7", "e8", "a9", "a9"},
