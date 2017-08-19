@@ -49,8 +49,8 @@ void expand(vector<Army> & newPureArmies, vector<Army> & newHeroArmies,
     int remainingFollowers;
     size_t availableMonstersSize = availableMonsters.size();
     size_t availableHeroesSize = availableHeroes.size();
-    vector<bool> usedHeroes; usedHeroes.reserve(availableHeroesSize);
-    size_t i, j, m;
+		vector<bool> usedHeroes; usedHeroes.resize(availableHeroesSize);
+		size_t i, j, m;
     SkillType currentSkill;
     bool friendsActive;
     
@@ -75,15 +75,13 @@ void expand(vector<Army> & newPureArmies, vector<Army> & newHeroArmies,
         if (!oldHeroArmies[i].lastFightData.dominated) {
             friendsActive = false;
             remainingFollowers = followerUpperBound - oldHeroArmies[i].followerCost;
-            for (j = 0; j < currentArmySize; j++) {
-                for (m = 0; m < availableHeroesSize; m++) {
-                    if (oldHeroArmies[i].monsters[j] == availableHeroes[m]) {
-                        friendsActive |= oldHeroArmies[i].monsters[j]->skill.type == friends;
-                        usedHeroes[m] = true;
-                        break;
-                    }
-                }
-            }
+						for (j = 0; j < currentArmySize; j++)
+							for (m = 0; m < availableHeroesSize; m++)
+								if (oldHeroArmies[i].monsters[j] == availableHeroes[m]) {
+									friendsActive |= oldHeroArmies[i].monsters[j]->skill.type == friends;
+									usedHeroes[m] = true;
+									break;
+								}
             for (m = 0; m < availableMonstersSize && availableMonsters[m]->cost < remainingFollowers && availableMonsters[m]->cost > minimumMonsterCost; m++) {
                 newHeroArmies.push_back(oldHeroArmies[i]);
                 newHeroArmies.back().add(availableMonsters[m]);
@@ -212,7 +210,7 @@ int solveInstance(bool debugInfo) {
     }
 
     // Run the Bruteforce Loop
-    startTime = time(NULL);
+    startTime = (int)(time(NULL));
     tempTime = startTime;
     size_t pureMonsterArmiesSize, heroMonsterArmiesSize;
     for (size_t armySize = 1; armySize <= maxMonstersAllowed; armySize++) {
@@ -224,24 +222,24 @@ int solveInstance(bool debugInfo) {
         
         // Run Fights for non-Hero setups
         debugOutput(tempTime, "  Simulating " + to_string(pureMonsterArmiesSize) + " non-hero Fights... ", debugInfo, false, false);
-        tempTime = time(NULL);
+        tempTime = (int)(time(NULL));
         simulateMultipleFights(pureMonsterArmies);
         
         // Run fights for setups with heroes
         debugOutput(tempTime, "  Simulating " + to_string(heroMonsterArmiesSize) + " hero Fights... ", debugInfo, true, false);
-        tempTime = time(NULL);
+        tempTime = (int)(time(NULL));
         simulateMultipleFights(heroMonsterArmies);
         
         if (armySize < maxMonstersAllowed) { 
             // Sort the results by follower cost for some optimization
             debugOutput(tempTime, "  Sorting List... ", debugInfo, true, false);
-            tempTime = time(NULL);
+            tempTime = (int)(time(NULL));
             sort(pureMonsterArmies.begin(), pureMonsterArmies.end(), hasFewerFollowers);
             sort(heroMonsterArmies.begin(), heroMonsterArmies.end(), hasFewerFollowers);
             
             // Calculate which results are strictly better than others (dominance)
             debugOutput(tempTime, "  Calculating Dominance for non-heroes... ", debugInfo, true, false);
-            tempTime = time(NULL);
+            tempTime = (int)(time(NULL));
             
             int leftFollowerCost;
             FightResult * currentFightResult;
@@ -283,7 +281,7 @@ int solveInstance(bool debugInfo) {
             }
             
             debugOutput(tempTime, "  Calculating Dominance for heroes... ", debugInfo, true, false);
-            tempTime = time(NULL);
+            tempTime = (int)(time(NULL));
             // Domination for setups with heroes
             bool usedHeroSubset, leftUsedHero;
             for (i = 0; i < heroMonsterArmiesSize; i++) {
@@ -341,7 +339,7 @@ int solveInstance(bool debugInfo) {
             
             // now we expand to add the next monster to all non-dominated armies
             debugOutput(tempTime, "  Expanding Lineups by one... ", debugInfo, true, false);
-            tempTime = time(NULL);
+            tempTime = (int)(time(NULL));
             
             vector<Army> nextPureArmies;
             vector<Army> nextHeroArmies;
@@ -349,14 +347,14 @@ int solveInstance(bool debugInfo) {
                     monsterList, armySize);
 
             debugOutput(tempTime, "  Moving Data... ", debugInfo, true, false);
-            tempTime = time(NULL);
+            tempTime = (int)(time(NULL));
             
             pureMonsterArmies = move(nextPureArmies);
             heroMonsterArmies = move(nextHeroArmies);
         }
         debugOutput(tempTime, "", true, true, true);
     }
-    return time(NULL) - startTime;
+    return (int)(time(NULL)) - startTime;
 }
 
 int main(int argc, char** argv) {
@@ -369,11 +367,12 @@ int main(int argc, char** argv) {
     vector<int> yourHeroLevels;
     
     // Additional convienience Strings
-    vector<string> daily {"w10", "e10", "a10", "w10", "shaman:99"};
-    vector<string> test3 {"a9", "f8", "a8"}; 
+		vector<string> daily{ "w10", "e10", "a10", "w10", "shaman:99" };
+		vector<string> daily2{ "w10", "e10", "a10", "w10", "shaman:99" };
+		vector<string> test3 {"a9", "f8", "a8"};
     // Declare Hero Levels
     maxMonstersAllowed = 6;         // Set this to how many Monsters should be in the solution (f.e 4 for X-3 Quests) 
-    minimumMonsterCost = 0;         // Minimum amount a monster used in the soluiton should cost. Useful for reducing the amount of monsters when you are sure you wont need them (f.e. a1 in dq20)
+    minimumMonsterCost = 100000;         // Minimum amount a monster used in the soluiton should cost. Useful for reducing the amount of monsters when you are sure you wont need them (f.e. a1 in dq20)
     stringLineup = daily;           // Choose against which lineup you want to fight use one from above or make your own and then change the name accordingly
     yourHeroLevels = {    // INPUT YOUR HERO LEVELS HERE (For manual editing: Names tell you which number is the level of which hero)
          0, 0, 0, 0,      // "lady of twilight","tiny","nebra","james"
