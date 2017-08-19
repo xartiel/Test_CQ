@@ -166,5 +166,5 @@ std::vector<string>				split(std::string s, std::string to_split)
 // Check if a string is exclusively a number.
 bool							is_Number(std::string str)
 {
-  return !str.empty() && str.find_first_not_of("0123456789") == std::string::npos;
+  return !str.empty() && str.find_first_not_of("-+0123456789") == std::string::npos;
 }
