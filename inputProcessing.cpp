@@ -1,50 +1,51 @@
 #include "inputProcessing.h"
 
-// Wait for user input before continuing. Used to stop program from colsing outside of a command line.
-void haltExecution() {
-    cout << "Press enter to continue...";
-    cin.get();
+// Wait for user input before continuing. Used to stop program from closing outside of a command line.
+void			haltExecution()
+{
+  std::cout << "Press enter to continue...";
+  std::cin.get();
 }
 
 // Ask the user a question that they can answer via command line
-bool askYesNoQuestion(string question) {
-    string inputString;
-    while (true) {
-        cout << question << " (y/n): ";
-        getline(cin, inputString);
-        if (inputString == "n") {
-            return false;
-        }
-        if (inputString == "y") {
-            return true;
-        }
-    }
-    return false;
+bool			askYesNoQuestion(std::string question)
+{
+  std::string	inputString;
+
+  std::cout << question << " (y/n): [Default: yes]";
+  std::getline(std::cin, inputString);
+  if (inputString == "n" || inputString == "no")
+	return false;
+  return true;
 }
 
 // Output things on the command line. Using shouldOutput this can be easily controlled globally
-void debugOutput(int timeStamp, string message, bool shouldOutput, bool finishLastOutput, bool finishLine) {
-    if (shouldOutput) { 
-        if (finishLastOutput) {
-            cout << "Done! (" << right << setw(3) << time(NULL) - timeStamp << " seconds) " << endl; 
-        }
-        if (message != "") {
-            cout << left << setw(50) << message;
-            if (finishLine) {
-                cout << endl;
-            }
-        } 
-    }   
+void			debugOutput(int timeStamp, std::string message, 
+							bool shouldOutput, bool finishLastOutput, 
+							bool finishLine)
+{
+  if (shouldOutput)
+  {
+	if (finishLastOutput)
+	  std::cout << "Done! (" << std::right << std::setw(3) << time(NULL) - timeStamp << " seconds) " << endl;
+	if (message != "")
+	{
+	  std::cout << std::left << std::setw(50) << message;
+	  if (finishLine)
+		std::cout << std::endl;
+	}
+  }
 }
 
 
 // Promt the User via command line to input his hero levels and return them as a vector<int>
-vector<int> takeHerolevelInput() {
-    vector<string> stringLevels;
-    vector<int> levels {};
-    string input;
-    fstream heroFile;
-    heroFile.exceptions(fstream::failbit);
+std::vector<int>			takeHerolevelInput()
+{
+  std::vector<std::string>	stringLevels;
+  std::vector<int>			levels{};
+  std::string				input;
+  std::fstream				heroFile;
+  heroFile.exceptions(fstream::failbit);
     
     if (askYesNoQuestion("Do you want to load hero levels from file?")) {
         try {
@@ -56,7 +57,7 @@ vector<int> takeHerolevelInput() {
             }
             heroFile.close();
         } catch (const exception & e) {
-            cout << "Could not find Hero File of Hero File is deprecated. (Were there new Heroes added recently?)" << endl;
+            cout << "Could not find Hero File or Hero File is deprecated. (Were there new Heroes added recently?)" << endl;
             cout << "Make sure you input the hero Levels manually at least once." << endl;
             throw runtime_error("Hero File not found");
         }
