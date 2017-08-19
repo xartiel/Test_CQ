@@ -367,11 +367,12 @@ int main(int argc, char** argv) {
     vector<int> yourHeroLevels;
     
     // Additional convienience Strings
-    vector<string> daily {"w10", "e10", "a10", "w10", "shaman:99"};
-    vector<string> test3 {"a9", "f8", "a8"}; 
+		vector<string> daily{ "w10", "e10", "a10", "w10", "shaman:99" };
+		vector<string> daily2{ "w10", "e10", "a10", "w10", "shaman:99" };
+		vector<string> test3 {"a9", "f8", "a8"};
     // Declare Hero Levels
     maxMonstersAllowed = 6;         // Set this to how many Monsters should be in the solution (f.e 4 for X-3 Quests) 
-    minimumMonsterCost = 0;         // Minimum amount a monster used in the soluiton should cost. Useful for reducing the amount of monsters when you are sure you wont need them (f.e. a1 in dq20)
+    minimumMonsterCost = 100000;         // Minimum amount a monster used in the soluiton should cost. Useful for reducing the amount of monsters when you are sure you wont need them (f.e. a1 in dq20)
     stringLineup = daily;           // Choose against which lineup you want to fight use one from above or make your own and then change the name accordingly
     yourHeroLevels = {    // INPUT YOUR HERO LEVELS HERE (For manual editing: Names tell you which number is the level of which hero)
          0, 0, 0, 0,      // "lady of twilight","tiny","nebra","james"
@@ -387,7 +388,7 @@ int main(int argc, char** argv) {
     }; 
     
     // Flow Control Variables
-    bool ignoreConsole = false;                         // Disables the console question whether you want to read from file or command line
+    bool ignoreConsole = true;                         // Disables the console question whether you want to read from file or command line
     bool individual = false;                            // Set this to true if you want to simulate individual fights (lineups will be promted when you run the program)
     bool debugInfo = true;                              // Set this to true if you want to see how far the execution is and how lone the execution took altogether
     bool manualInput = false;                           // Set this to true if you want nothing to do with this file and just want to input stuff over the command line like you're used to

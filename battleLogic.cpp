@@ -240,18 +240,18 @@ void simulateFight(Army & left, Army & right, bool verbose) {
     
     // write all the results into a FightResult
     left.lastFightData.dominated = false;
-    left.lastFightData.leftAoeDamage = leftCumAoeDamageTaken;
-    left.lastFightData.rightAoeDamage = rightCumAoeDamageTaken;
+    left.lastFightData.leftAoeDamage = (int16_t)(leftCumAoeDamageTaken);
+    left.lastFightData.rightAoeDamage = (int16_t)(rightCumAoeDamageTaken);
     
     if (leftLost >= leftArmySize) { //draws count as right wins. 
         left.lastFightData.rightWon = true;
         left.lastFightData.monstersLost = (int8_t)(rightLost); 
-        left.lastFightData.damage = rightFrontDamageTaken;
+        left.lastFightData.damage = (int16_t)(rightFrontDamageTaken);
         left.lastFightData.berserk = (int8_t)(rightBerserkProcs);
     } else {
         left.lastFightData.rightWon = false;
         left.lastFightData.monstersLost = (int8_t)(leftLost);
-        left.lastFightData.damage = leftFrontDamageTaken;
+        left.lastFightData.damage = (int16_t)(leftFrontDamageTaken);
         left.lastFightData.berserk = (int8_t)(leftBerserkProcs);
     }
 }
