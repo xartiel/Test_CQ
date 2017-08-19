@@ -420,9 +420,11 @@ int main(int argc, char** argv) {
             }
             targetArmy = takeLineupInput("Enter Enemy Lineup");
             targetArmySize = targetArmy.monsterAmount;
-            cout << "Enter how many monsters are allowed in the solution" << endl;
+			std::cout << "Enter how many monsters are allowed in the solution ";
+			std::cout << "[Default: 6]" << std::endl;
             getline(cin, inputString);
-            maxMonstersAllowed = stoi(inputString);
+            if (inputString.size() && is_Number(inputString))
+			  maxMonstersAllowed = std::stoi(inputString);
             cout << "Set a lower follower limit on monsters used:" << endl;
             cout << "  (f.e. 215000 will exclude e8 and cheaper in the solution)" << endl;
             cout << "  0 for ALL monsters; -1 for NO monsters" << endl;

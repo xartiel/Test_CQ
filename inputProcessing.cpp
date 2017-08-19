@@ -12,7 +12,7 @@ bool			askYesNoQuestion(std::string question)
 {
   std::string	inputString;
 
-  std::cout << question << " (y/n): [Default: yes]";
+  std::cout << question << " (y/n) [Default: yes]: ";
   std::getline(std::cin, inputString);
   if (inputString == "n" || inputString == "no")
 	return false;
@@ -161,4 +161,10 @@ std::vector<string>				split(std::string s, std::string to_split)
 	x = limit + to_split.length();
   }
   return output;
+}
+
+// Check if a string is exclusively a number.
+bool							is_Number(std::string str)
+{
+  return !str.empty() && str.find_first_not_of("0123456789") == std::string::npos;
 }
