@@ -212,7 +212,7 @@ int solveInstance(bool debugInfo) {
     }
 
     // Run the Bruteforce Loop
-    startTime = time(NULL);
+    startTime = (int)(time(NULL));
     tempTime = startTime;
     size_t pureMonsterArmiesSize, heroMonsterArmiesSize;
     for (size_t armySize = 1; armySize <= maxMonstersAllowed; armySize++) {
@@ -224,24 +224,24 @@ int solveInstance(bool debugInfo) {
         
         // Run Fights for non-Hero setups
         debugOutput(tempTime, "  Simulating " + to_string(pureMonsterArmiesSize) + " non-hero Fights... ", debugInfo, false, false);
-        tempTime = time(NULL);
+        tempTime = (int)(time(NULL));
         simulateMultipleFights(pureMonsterArmies);
         
         // Run fights for setups with heroes
         debugOutput(tempTime, "  Simulating " + to_string(heroMonsterArmiesSize) + " hero Fights... ", debugInfo, true, false);
-        tempTime = time(NULL);
+        tempTime = (int)(time(NULL));
         simulateMultipleFights(heroMonsterArmies);
         
         if (armySize < maxMonstersAllowed) { 
             // Sort the results by follower cost for some optimization
             debugOutput(tempTime, "  Sorting List... ", debugInfo, true, false);
-            tempTime = time(NULL);
+            tempTime = (int)(time(NULL));
             sort(pureMonsterArmies.begin(), pureMonsterArmies.end(), hasFewerFollowers);
             sort(heroMonsterArmies.begin(), heroMonsterArmies.end(), hasFewerFollowers);
             
             // Calculate which results are strictly better than others (dominance)
             debugOutput(tempTime, "  Calculating Dominance for non-heroes... ", debugInfo, true, false);
-            tempTime = time(NULL);
+            tempTime = (int)(time(NULL));
             
             int leftFollowerCost;
             FightResult * currentFightResult;
@@ -283,7 +283,7 @@ int solveInstance(bool debugInfo) {
             }
             
             debugOutput(tempTime, "  Calculating Dominance for heroes... ", debugInfo, true, false);
-            tempTime = time(NULL);
+            tempTime = (int)(time(NULL));
             // Domination for setups with heroes
             bool usedHeroSubset, leftUsedHero;
             for (i = 0; i < heroMonsterArmiesSize; i++) {
@@ -341,7 +341,7 @@ int solveInstance(bool debugInfo) {
             
             // now we expand to add the next monster to all non-dominated armies
             debugOutput(tempTime, "  Expanding Lineups by one... ", debugInfo, true, false);
-            tempTime = time(NULL);
+            tempTime = (int)(time(NULL));
             
             vector<Army> nextPureArmies;
             vector<Army> nextHeroArmies;
@@ -349,14 +349,14 @@ int solveInstance(bool debugInfo) {
                     monsterList, armySize);
 
             debugOutput(tempTime, "  Moving Data... ", debugInfo, true, false);
-            tempTime = time(NULL);
+            tempTime = (int)(time(NULL));
             
             pureMonsterArmies = move(nextPureArmies);
             heroMonsterArmies = move(nextHeroArmies);
         }
         debugOutput(tempTime, "", true, true, true);
     }
-    return time(NULL) - startTime;
+    return (int)(time(NULL)) - startTime;
 }
 
 int main(int argc, char** argv) {
