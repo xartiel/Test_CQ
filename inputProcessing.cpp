@@ -39,12 +39,12 @@ void			debugOutput(int timeStamp, std::string message,
 
 
 // Promt the User via command line to input his hero levels and return them as a vector<int>
-std::vector<int>			takeHerolevelInput()
+std::vector<int>				takeHerolevelInput()
 {
-  std::vector<std::string>	stringLevels;
-  std::vector<int>			levels{};
-  std::string				input;
-  std::fstream				heroFile;
+  std::vector<std::string>		stringLevels;
+  std::vector<int>				levels{};
+  std::string					input;
+  std::fstream					heroFile;
   heroFile.exceptions(std::fstream::failbit);
 
   if (askYesNoQuestion("Do you want to load hero levels from file?"))
@@ -92,11 +92,11 @@ std::vector<int>			takeHerolevelInput()
 }
 
 // Promt the user via command Line to input a monster lineup and return them as a vector of pointers to those monster
-std::vector<Monster *>		takeLineupInput(std::string prompt)
+std::vector<Monster *>			takeLineupInput(std::string prompt)
 {
-  std::vector<Monster *>	lineup{};
-  std::string				questString = "quest";
-  std::string				input;
+  std::vector<Monster *>		lineup{};
+  std::string					questString = "quest";
+  std::string					input;
 
   std::cout << prompt << std::endl;
   std::cout << "Enter Monsters separated with commas or type";
