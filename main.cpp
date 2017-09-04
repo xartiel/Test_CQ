@@ -3,6 +3,7 @@
 // input now needs to be separated by commas. To enter heroes, do <name>:<level>, for example:
 // a2,e3,lady of twilight:1,e4
 // Clean-up and optimization done by Diceycle
+// Tools.DiffFiles
 
 #include <iostream>
 #include <vector>
