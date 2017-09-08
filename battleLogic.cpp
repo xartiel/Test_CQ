@@ -81,61 +81,74 @@ void simulateFight(Army & left, Army & right, bool verbose) {
         aoeDamageLeft = 0;
         paoeDamageLeft = 0;
         healingLeft = 0;
-        pureMonstersLeft = 0;
-				for (size_t i = leftLost; i < leftArmySize; i++)
-				{
-					if (leftCumAoeDamageTaken >= leftLineup[i]->hp)
-					{ // Check for Backline Deaths
-						leftLost += (leftLost == i);
-					}
-					else
-					{
-						skill = &leftLineup[i]->skill;
-						skillType = skill->type;
-						skillTarget = skill->target;
-						if (skillType == nothing)
-							pureMonstersLeft++; // count for friends ability
-						else if (skillType == protect && (skillTarget == all || skillTarget == leftLineup[leftLost]->element))
-							protectionLeft = (int)(protectionLeft + skill->amount);
-						else if (skillType == buff && (skillTarget == all || skillTarget == leftLineup[leftLost]->element))
-							damageBuffLeft = (int)(damageBuffLeft + skill->amount);
-						else if (skillType == heal)
-							healingLeft = (int)(healingLeft + skill->amount);
-						else if (skillType == aoe)
-							aoeDamageLeft = (int)(aoeDamageLeft + skill->amount);
-						else if (skillType == pAoe && i == leftLost)
-							paoeDamageLeft += leftLineup[i]->damage;
-					}
-				}
-        
-        damageBuffRight = 0;
-        protectionRight = 0;
+		pureMonstersLeft = 0;
+		for (size_t i = leftLost; i < leftArmySize; i++)
+		{
+		  if (leftCumAoeDamageTaken >= leftLineup[i]->hp)
+		  { // Check for Backline Deaths
+			leftLost += (leftLost == i);
+		  }
+		  else
+		  {
+			skill = &leftLineup[i]->skill;
+			skillType = skill->type;
+			skillTarget = skill->target;
+			if (skillType == nothing)
+				pureMonstersLeft++; // count for friends ability
+			else if (skillType == protect && (skillTarget == all || skillTarget == leftLineup[leftLost]->element))
+				protectionLeft = (int)(protectionLeft + skill->amount);
+			else if (skillType == buff && (skillTarget == all || skillTarget == leftLineup[leftLost]->element))
+				damageBuffLeft = (int)(damageBuffLeft + skill->amount);
+			else if (skillType == buffpro && (skillTarget == all || skillTarget == leftLineup[leftLost]->element))
+			{
+			  damageBuffLeft = (int)(damageBuffLeft + skill->amount);
+			  protectionLeft = (int)(protectionLeft + skill->amount);
+			}
+			else if (skillType == heal)
+				healingLeft = (int)(healingLeft + skill->amount);
+			else if (skillType == aoe)
+				aoeDamageLeft = (int)(aoeDamageLeft + skill->amount);
+			else if (skillType == pAoe && i == leftLost)
+				paoeDamageLeft += leftLineup[i]->damage;
+		  }
+		}
+
+		damageBuffRight = 0;
+		protectionRight = 0;
         aoeDamageRight = 0;
         paoeDamageRight = 0;
         healingRight = 0;
         pureMonstersRight = 0;
-        for (size_t i = rightLost; i < rightArmySize; i++) {
-            if (rightCumAoeDamageTaken >= rightLineup[i]->hp) { // Check for Backline Deaths
-                rightLost += (i == rightLost);
-            } else {
-                skill = &rightLineup[i]->skill;
-                skillType = skill->type;
-                skillTarget = skill->target;
-                if (skillType == nothing) {
-                    pureMonstersRight++;  // count for friends ability
-                } else if (skillType == protect && (skillTarget == all || skillTarget == rightLineup[rightLost]->element)) {
-                    protectionRight = (int)(protectionRight + skill->amount);
-                } else if (skillType == buff && (skillTarget == all || skillTarget == rightLineup[rightLost]->element)) {
-                    damageBuffRight = (int)(damageBuffRight + skill->amount);
-                } else if (skillType == heal) {
-                    healingRight = (int)(healingRight + skill->amount);
-                } else if (skillType == aoe) {
-                    aoeDamageRight = (int)(aoeDamageRight + skill->amount);
-                } else if (skillType == pAoe && i == rightLost) {
-                    paoeDamageRight += rightLineup[i]->damage;
-                }
-            }
-        }
+		for (size_t i = rightLost; i < rightArmySize; i++)
+		{
+		  if (rightCumAoeDamageTaken >= rightLineup[i]->hp)
+		  { // Check for Backline Deaths
+			rightLost += (i == rightLost);
+		  }
+		  else
+		  {
+			skill = &rightLineup[i]->skill;
+			skillType = skill->type;
+			skillTarget = skill->target;
+			if (skillType == nothing)
+			  pureMonstersRight++;  // count for friends ability
+			else if (skillType == protect && (skillTarget == all || skillTarget == rightLineup[rightLost]->element))
+				protectionRight = (int)(protectionRight + skill->amount);
+			else if (skillType == buff && (skillTarget == all || skillTarget == rightLineup[rightLost]->element))
+				damageBuffRight = (int)(damageBuffRight + skill->amount);
+			else if (skillType == buffpro && (skillTarget == all || skillTarget == rightLineup[rightLost]->element))
+			{
+			  damageBuffRight = (int)(damageBuffRight + skill->amount);
+			  protectionRight = (int)(protectionRight + skill->amount);
+			}
+			else if (skillType == heal)
+			  healingRight = (int)(healingRight + skill->amount);
+			else if (skillType == aoe)
+			  aoeDamageRight = (int)(aoeDamageRight + skill->amount);
+			else if (skillType == pAoe && i == rightLost)
+			  paoeDamageRight += rightLineup[i]->damage;
+		  }
+		}
         
         // Add last effects of abilities and start resolving the turn
         if (leftLost >= leftArmySize || rightLost >= rightArmySize) {

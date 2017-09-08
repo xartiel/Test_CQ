@@ -121,7 +121,9 @@ void getQuickSolutions(Army target, size_t limit) {
                 tempArmy = Army(greedy);
                 tempArmy.add(monsterList[m]);
                 simulateFight(tempArmy, target);
-                if (!tempArmy.lastFightData.rightWon || (tempArmy.lastFightData.monstersLost > i && i+1 < limit)) { // the last monster has to win the encounter
+                if (!tempArmy.lastFightData.rightWon || 
+				  (tempArmy.lastFightData.monstersLost > (int)(i) && i+1 < (int)(limit)))
+				{ // the last monster has to win the encounter
                     greedy.push_back(monsterList[m]);
                     break;
                 }
@@ -255,7 +257,10 @@ int solveInstance(bool debugInfo) {
                 // A result is obsolete if only one expansion is left but no single mob can beat the last two enemy mobs alone (optimizable)
                 if (armySize == (maxMonstersAllowed - 1) && optimizable) {
                     // TODO: Investigate whether this is truly correct: What if the second-to-last mob is already damaged (not from aoe) i.e. it defeated the last mob of left?
-                    if (currentFightResult->rightWon && currentFightResult->monstersLost < targetArmySize - 2 && currentFightResult->rightAoeDamage == 0) {
+                    if (currentFightResult->rightWon && 
+					  currentFightResult->monstersLost < (int)(targetArmySize) - 2 &&
+					  currentFightResult->rightAoeDamage == 0)
+					{
                         currentFightResult->dominated = true;
                     }
                 }
@@ -300,7 +305,9 @@ int solveInstance(bool debugInfo) {
                 // A result is obsolete if only one expansion is left but no single mob can beat the last two enemy mobs alone (optimizable)
                 if (armySize == (maxMonstersAllowed - 1) && optimizable && currentFightResult->rightAoeDamage == 0) {
                     // TODO: Investigate whether this is truly correct: What if the second-to-last mob is already damaged (not from aoe) i.e. it defeated the last mob of left?
-                    if (currentFightResult->rightWon && currentFightResult->monstersLost < targetArmySize - 2){
+                    if (currentFightResult->rightWon && 
+					  currentFightResult->monstersLost < (int)(targetArmySize) - 2)
+					{
                         currentFightResult->dominated = true;
                     }
                 }
@@ -385,6 +392,7 @@ int							main()
 	   0, 0, 0,         // "k41ry", "t4urus", "tr0n1x"
 	   0, 0, 0,         // "aquortis", "aeris", "geum"
 	   0, 0, 0,         // "rudean","aural","geror"
+	   0, 0, 0,         // "veildur","brynhildr","groth"
 	   0, 0, 0, 0,      // "valor","rokka","pyromancer","bewat"
 	   0, 0, 0, 0       // "nicte", "forest druid","ignitor","undine"
   };

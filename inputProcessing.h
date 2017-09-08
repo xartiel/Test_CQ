@@ -11,7 +11,7 @@
 
 using namespace std;
 
-const string heroVersion = "2.5.1";
+const string heroVersion = "2.6.0";
 
 // Wait for user input before continuing. Used to stop program from colsing outside of a command line.
 void haltExecution();
