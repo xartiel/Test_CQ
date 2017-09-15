@@ -99,7 +99,7 @@ void simulateFight(Army & left, Army & right, bool verbose) {
 				protectionLeft = (int)(protectionLeft + skill->amount);
 			else if (skillType == buff && (skillTarget == all || skillTarget == leftLineup[leftLost]->element))
 				damageBuffLeft = (int)(damageBuffLeft + skill->amount);
-			else if (skillType == buffpro && (skillTarget == all || skillTarget == leftLineup[leftLost]->element))
+			else if (skillType == champion && (skillTarget == all || skillTarget == leftLineup[leftLost]->element))
 			{
 			  damageBuffLeft = (int)(damageBuffLeft + skill->amount);
 			  protectionLeft = (int)(protectionLeft + skill->amount);
@@ -136,7 +136,7 @@ void simulateFight(Army & left, Army & right, bool verbose) {
 				protectionRight = (int)(protectionRight + skill->amount);
 			else if (skillType == buff && (skillTarget == all || skillTarget == rightLineup[rightLost]->element))
 				damageBuffRight = (int)(damageBuffRight + skill->amount);
-			else if (skillType == buffpro && (skillTarget == all || skillTarget == rightLineup[rightLost]->element))
+			else if (skillType == champion && (skillTarget == all || skillTarget == rightLineup[rightLost]->element))
 			{
 			  damageBuffRight = (int)(damageBuffRight + skill->amount);
 			  protectionRight = (int)(protectionRight + skill->amount);
