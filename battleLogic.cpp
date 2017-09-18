@@ -180,25 +180,43 @@ void simulateFight(Army & left, Army & right, bool verbose) {
         damageRight = currentMonsterRight->damage;
         
         // Handle Monsters with skills berserk or friends
-        if (currentMonsterLeft->skill.type == berserk) {
-					damageLeft = (int)(damageLeft * pow(currentMonsterLeft->skill.amount, leftBerserkProcs));
-            leftBerserkProcs++;
-        } else {
-            leftBerserkProcs = 0;
-        }
+     //   if (currentMonsterLeft->skill.type == berserk) {
+					//damageLeft = (int)(damageLeft * pow(currentMonsterLeft->skill.amount, leftBerserkProcs));
+     //       leftBerserkProcs++;
+     //   } else {
+     //       leftBerserkProcs = 0;
+     //   }
         if (currentMonsterLeft->skill.type == friends) {
 					damageLeft = (int)(damageLeft * pow(currentMonsterLeft->skill.amount, pureMonstersLeft));
         }
+		else if (currentMonsterLeft->skill.type == adapt && currentMonsterLeft->element == currentMonsterRight->element)
+		{
+		  damageLeft = int(damageLeft * currentMonsterLeft->skill.amount);
+		}
+		else if (currentMonsterLeft->skill.type == berserk)
+		{
+		  damageLeft = (int)(damageLeft * pow(currentMonsterLeft->skill.amount, leftBerserkProcs));
+		  leftBerserkProcs++;
+		}
         
-        if (currentMonsterRight->skill.type == berserk) {
-					damageRight = (int)(damageRight * pow(currentMonsterRight->skill.amount, rightBerserkProcs));
-            rightBerserkProcs++; 
-        } else {
-            rightBerserkProcs = 0;
-        }
+     //   if (currentMonsterRight->skill.type == berserk) {
+					//damageRight = (int)(damageRight * pow(currentMonsterRight->skill.amount, rightBerserkProcs));
+     //       rightBerserkProcs++; 
+     //   } else {
+     //       rightBerserkProcs = 0;
+     //   }
         if (currentMonsterRight->skill.type == friends) {
 					damageRight = (int)(damageRight * pow(currentMonsterRight->skill.amount, pureMonstersRight));
         }
+		else if (currentMonsterLeft->skill.type == adapt && currentMonsterRight->element == currentMonsterLeft->element)
+		{
+		  damageRight = (int)(damageRight * currentMonsterRight->skill.amount);
+		}
+		else if (currentMonsterRight->skill.type == berserk)
+		{
+		  damageRight = (int)(damageRight * pow(currentMonsterRight->skill.amount, rightBerserkProcs));
+		  rightBerserkProcs++;
+		}
         
         // Add Buff Damage
         damageLeft += damageBuffLeft;
