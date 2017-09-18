@@ -86,7 +86,7 @@ static vector<Monster> monsterBaseList{ // Raw Monster Data, holds the actual Ob
 static vector<Monster> baseHeroes { // Raw, unleveld Hero Data, holds actual Objects
     Monster( 45, 20, 0, "lady of twilight",  air,   {protect, all, air, 1}),
     Monster( 70, 30, 0, "tiny",              earth, {aoe,     all, earth, 2}),
-    Monster( 90, 40, 0, "nebra",             fire,  {buff,    all, fire, 4}),
+    Monster( 90, 40, 0, "nebra",             fire,  {buff,    all, fire, 8}),
     Monster( 50, 12, 0, "james",             earth, {pAoe,    all, earth, 1}),
     
     Monster( 22, 14, 0, "hunter",            air,   {buff,    air, air, 2}),
@@ -213,7 +213,7 @@ static vector<vector<string>> quests { // Contains all quest lineups for easy re
 	{"a10", "a8", "a9", "a10", "a9"},
 	{"a10", "w7", "f7", "e8", "a9", "a9"},
 	{"e10", "e10", "e10", "f10"},               //30
-	{"e9", "f10", "f9", "f9", "a10", "a8"},
+	{"e9", "f10", "f9", "f9", "a10", "a7"},
 	{"w1", "a9", "f10", "e9", "a10", "w10"},
 	{"e9", "a9", "a9", "f9", "a9", "f10"},
 	{"f8", "e9", "w9", "a9", "a10", "a10"},
