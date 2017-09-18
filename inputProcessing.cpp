@@ -96,6 +96,7 @@ std::vector<Monster *>			takeLineupInput(std::string prompt)
 {
   std::vector<Monster *>		lineup{};
   std::string					questString = "quest";
+  std::string					questString2 = "q";
   std::string					input;
 
   std::cout << prompt << std::endl;
@@ -106,6 +107,11 @@ std::vector<Monster *>			takeLineupInput(std::string prompt)
   if (input.compare(0, questString.length(), questString) == 0)
   {
 	int questNumber = stoi(input.substr(questString.length(), 2));
+	lineup = makeMonstersFromStrings(quests[questNumber]);
+  }
+  else if (input.compare(0, questString2.length(), questString2) == 0)
+  {
+	int questNumber = stoi(input.substr(questString2.length(), 2));
 	lineup = makeMonstersFromStrings(quests[questNumber]);
   }
   else
